@@ -1,4 +1,8 @@
 package gadgetStore.dto.userDto.request;
 
-public class UserRequest {
+public record UserRequest (
+        String firstName,
+        String lastName
+){
+
 }

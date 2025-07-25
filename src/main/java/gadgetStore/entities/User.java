@@ -14,12 +14,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User implements UserDetails {
+public  class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -31,11 +31,11 @@ public class User implements UserDetails {
     ZonedDateTime updatedDate;
     @Enumerated(EnumType.STRING)
     Role role;
-    @OneToOne (mappedBy = "user")
+    @OneToOne (mappedBy = "user", cascade = CascadeType.REMOVE)
     Basket basket;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     List<Favorite> favorites;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     List<Comment> comments;
 
     @Override
@@ -51,5 +51,25 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

@@ -1,7 +1,9 @@
 package gadgetStore.api;
 
+import gadgetStore.dto.SimpleResponse;
 import gadgetStore.dto.authDto.AuthResponse;
 import gadgetStore.dto.authDto.request.SignInRequest;
+import gadgetStore.dto.authDto.request.SignUpRequest;
 import gadgetStore.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthApi {
     private final AuthService authService;
 
-    @PostMapping
+    @PostMapping("/signUp")
+    public AuthResponse singUp(@RequestBody SignUpRequest signUpRequest) {
+        return authService.signUp(signUpRequest);
+    }
+
+    @PostMapping("/signIn")
     public AuthResponse signIn(@RequestBody SignInRequest signInRequest) {
         return authService.signIn(signInRequest);
     }

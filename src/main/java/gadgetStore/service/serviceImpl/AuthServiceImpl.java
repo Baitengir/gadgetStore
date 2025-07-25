@@ -1,21 +1,17 @@
 package gadgetStore.service.serviceImpl;
 
 import gadgetStore.config.jwtConfig.JwtService;
-import gadgetStore.dto.SimpleResponse;
 import gadgetStore.dto.authDto.AuthResponse;
 import gadgetStore.dto.authDto.request.SignInRequest;
 import gadgetStore.dto.authDto.request.SignUpRequest;
 import gadgetStore.entities.User;
 import gadgetStore.enums.Role;
 import gadgetStore.exceptions.AlreadyExistException;
-import gadgetStore.exceptions.NotFoundException;
 import gadgetStore.repository.UserRepo;
 import gadgetStore.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -27,31 +23,36 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public SimpleResponse signUp(SignUpRequest signUpRequest) {
+    public AuthResponse signUp(SignUpRequest signUpRequest) {
+
+        Optional<User> userByEmail = userRepo.findUserByEmail(signUpRequest.email());
+
+        if (userByEmail.isPresent()) {
+            throw new AlreadyExistException("User with email '" + signUpRequest.email() + "' already exist");
+        }
+
         User user = User.builder()
                 .firstName(signUpRequest.firstName())
                 .lastName(signUpRequest.lastName())
                 .email(signUpRequest.email())
                 .password(passwordEncoder.encode(signUpRequest.password()))
                 .signUpDate(ZonedDateTime.now())
+                .role(Role.USER)
                 .build();
 
-        Optional<User> userByEmail = userRepo.findUserByEmail(user.getEmail());
-        if (userByEmail.isEmpty()) {
-            userRepo.save(user);
-            return SimpleResponse.builder()
-                    .httpStatus(HttpStatus.CREATED)
-                    .message("User registered successfully")
-                    .build();
-        }
+        userRepo.save(user);
 
-        throw new AlreadyExistException("User with email " + signUpRequest.email() + " already exist in database");
+        return   AuthResponse.builder()
+                .id(user.getId())
+                .token(jwtService.generateToken(user))
+                .role(user.getRole())
+                .build();
     }
 
     @Override
     public AuthResponse signIn(SignInRequest signInRequest) {
 
-        User userInDb = userRepo.findUserByEmailException(signInRequest.email());
+        User userInDb = userRepo.getUserByEmailOrException(signInRequest.email());
 
         if (!passwordEncoder.matches(signInRequest.password(), userInDb.getPassword())) {
             throw new RuntimeException("Invalid password");

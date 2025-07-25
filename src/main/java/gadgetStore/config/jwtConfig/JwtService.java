@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import gadgetStore.entities.User;
+import gadgetStore.exceptions.NotFoundException;
 import gadgetStore.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +48,7 @@ public class JwtService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         return userRepo.findUserByEmail(email).orElseThrow(() ->
-                new RuntimeException(String.format("User with  email %s not found!", email)));
+                new NotFoundException(String.format("User with  email %s not found!", email)));
     }
 
     public Algorithm getAlgorithm(){

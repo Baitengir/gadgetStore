@@ -1,4 +1,4 @@
-package gadgetStore.exceptions;
+package gadgetStore.exceptions.globalException;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

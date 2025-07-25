@@ -19,6 +19,6 @@ public class Brand {
     Long id;
     String name;
     String image;
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.REMOVE)
     List<Product> products;
 }

@@ -11,6 +11,6 @@ public interface UserService {
     List<UserResponse> getAll();
     SimpleResponse update(Long id, UserRequest userRequest);
     SimpleResponse delete(Long id);
-
-    //
+    SimpleResponse addProductToFavourite(Long productId);
+    //addProductToFavorite
 }

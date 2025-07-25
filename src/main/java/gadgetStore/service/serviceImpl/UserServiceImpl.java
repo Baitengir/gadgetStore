@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SimpleResponse update(Long id, UserRequest userRequest) {
-        User user = userRepo.getUserByIdOrException(id);
+        User user = userRepo.findById(id).orElseThrow();
 
         user.setFirstName(userRequest.firstName());
         user.setLastName(userRequest.lastName());
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("User with id '\"+id+\"' successfully updated")
+                .message("User with id '"+id+"' successfully updated")
                 .build();
     }
 
@@ -52,7 +52,12 @@ public class UserServiceImpl implements UserService {
         userRepo.delete(user);
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("User with id '"+id+"' successfully deleted")
+                .message("User with id '"+ id +"' successfully deleted")
                 .build();
+    }
+
+    @Override
+    public SimpleResponse addProductToFavourite(Long productId) {
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import gadgetStore.dto.authDto.request.SignUpRequest;
 import gadgetStore.entities.User;
 import gadgetStore.enums.Role;
 import gadgetStore.exceptions.AlreadyExistException;
+import gadgetStore.exceptions.InvalidPasswordException;
 import gadgetStore.repository.UserRepo;
 import gadgetStore.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse signUp(SignUpRequest signUpRequest) {
-
         Optional<User> userByEmail = userRepo.findUserByEmail(signUpRequest.email());
-
         if (userByEmail.isPresent()) {
             throw new AlreadyExistException("User with email '" + signUpRequest.email() + "' already exist");
         }
@@ -41,7 +40,6 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         userRepo.save(user);
-
         return   AuthResponse.builder()
                 .id(user.getId())
                 .token(jwtService.generateToken(user))
@@ -51,13 +49,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse signIn(SignInRequest signInRequest) {
-
         User userInDb = userRepo.getUserByEmailOrException(signInRequest.email());
-
         if (!passwordEncoder.matches(signInRequest.password(), userInDb.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new InvalidPasswordException("Invalid password! try again");
         }
-
         return AuthResponse.builder()
                 .id(userInDb.getId())
                 .token(jwtService.generateToken(userInDb))

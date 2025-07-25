@@ -29,9 +29,12 @@ public class Product {
     Category category;
     @ManyToOne
     Brand brand;
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     List<Favorite> favorites;
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     List<Comment> comments;
+    @ManyToMany (mappedBy = "products")
+    List<Basket> baskets;
+
 
 }

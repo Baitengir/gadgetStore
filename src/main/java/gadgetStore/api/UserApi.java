@@ -17,6 +17,7 @@ import java.util.List;
 public class UserApi {
     private final UserService userService;
 
+
     @GetMapping("/{id}")
     public UserResponse getById(@PathVariable Long id) {
         return userService.getById(id);
@@ -38,5 +39,14 @@ public class UserApi {
         return userService.delete(id);
     }
 
+    @PostMapping("/basket/{productId}")
+    public SimpleResponse addProductToBasket(@PathVariable Long productId) {
+        return userService.addProductToBasket(productId);
+    }
+
+    @PostMapping("/favourite/{productId}")
+    public SimpleResponse addProductToFavourite(@PathVariable Long productId) {
+        return userService.addProductToFavourite(productId);
+    }
 
 }

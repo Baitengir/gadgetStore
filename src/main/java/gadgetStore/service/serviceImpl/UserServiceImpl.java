@@ -9,6 +9,8 @@ import gadgetStore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(userRequest.firstName());
         user.setLastName(userRequest.lastName());
+        user.setUpdatedDate(ZonedDateTime.now());
         userRepo.save(user);
 
         return SimpleResponse.builder()

@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -34,9 +35,9 @@ public  class User implements UserDetails {
     @OneToOne (mappedBy = "user", cascade = CascadeType.REMOVE)
     Basket basket;
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    List<Favorite> favorites;
+    List<Favorite> favorites = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    List<Comment> comments;
+    List<Comment> comments = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

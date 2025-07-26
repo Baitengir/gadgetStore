@@ -4,16 +4,20 @@ import gadgetStore.config.jwtConfig.JwtService;
 import gadgetStore.dto.authDto.AuthResponse;
 import gadgetStore.dto.authDto.request.SignInRequest;
 import gadgetStore.dto.authDto.request.SignUpRequest;
+import gadgetStore.entities.Basket;
 import gadgetStore.entities.User;
 import gadgetStore.enums.Role;
 import gadgetStore.exceptions.AlreadyExistException;
 import gadgetStore.exceptions.InvalidPasswordException;
+import gadgetStore.repository.BasketRepo;
 import gadgetStore.repository.UserRepo;
 import gadgetStore.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -22,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepo userRepo;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final BasketRepo basketRepo;
 
     @Override
     public AuthResponse signUp(SignUpRequest signUpRequest) {
@@ -39,8 +44,17 @@ public class AuthServiceImpl implements AuthService {
                 .role(Role.USER)
                 .build();
 
+
+        Basket basket = Basket.builder()
+                .user(user)
+                .products(new ArrayList<>())
+                .build();
+
         userRepo.save(user);
-        return   AuthResponse.builder()
+        basketRepo.save(basket);
+        user.setBasket(basket);
+
+        return AuthResponse.builder()
                 .id(user.getId())
                 .token(jwtService.generateToken(user))
                 .role(user.getRole())

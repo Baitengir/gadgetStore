@@ -1,7 +1,6 @@
 package gadgetStore.repository;
 
 import gadgetStore.dto.productDto.ProductResponseForGetAll;
-import gadgetStore.entities.Brand;
 import gadgetStore.entities.Product;
 import gadgetStore.enums.Category;
 import gadgetStore.exceptions.NotFoundException;
@@ -20,23 +19,16 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
 //    Category category;
 //    Brand brand;
 
-    @Query ("""
-            select new gadgetStore.dto.productDto.ProductResponseForGetAll(
-                        p.id, p.name, p.price, p.madeIn, p.category, p.brand
-                        )
-            from Product p
-            """)
-    List<ProductResponseForGetAll> getAll();
 
     @Query("""
             select new gadgetStore.dto.productDto.ProductResponseForGetAll(
-                        p.id, p.name, p.price, p.madeIn, p.category, p.brand
+                        p.id, p.name, p.price, p.madeIn, p.category
                         )
             from Product p
                         where p.category = :category
                                     and p.price <= :price
             """)
-    public List<ProductResponseForGetAll> getAllByCategoryAndPrice(Category category, Double price);
+    List<ProductResponseForGetAll> getAllByCategoryAndPrice(Category category, double price);
 
     default Product getProductByIdOrException(Long id){
         return findById(id).orElseThrow(

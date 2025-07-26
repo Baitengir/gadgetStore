@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,9 +20,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
-    String price;
+    double price;
     @ElementCollection
-    List<String> images;
+    List<String> images= new ArrayList<>();
     String description;
     boolean isFavorite;
     String madeIn;
@@ -30,11 +31,11 @@ public class Product {
     @ManyToOne
     Brand brand;
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    List<Favorite> favorites;
+    List<Favorite> favorites = new ArrayList<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    List<Comment> comments;
+    List<Comment> comments = new ArrayList<>();
     @ManyToMany (mappedBy = "products")
-    List<Basket> baskets;
+    List<Basket> baskets = new ArrayList<>();
 
 
 }

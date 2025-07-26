@@ -18,18 +18,13 @@ public class ProductApi {
     private final ProductService productService;
 
     @PostMapping("/{id}")
-    public SimpleResponse save(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
-        return productService.save(id, productRequest);
+    public SimpleResponse save(@PathVariable Long id, @RequestBody ProductRequest productRequest, @RequestParam Category category) {
+        return productService.save(category, id, productRequest);
     }
 
     @GetMapping("/{id}")
     public ProductResponseForGetById getById(@PathVariable Long id) {
         return productService.getById(id);
-    }
-
-    @GetMapping
-    public List<ProductResponseForGetAll> getAll() {
-        return productService.getAll();
     }
 
     @PutMapping("/{id}")

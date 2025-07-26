@@ -1,19 +1,28 @@
 package gadgetStore.dto.productDto;
 
-import gadgetStore.entities.Brand;
 import gadgetStore.enums.Category;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class ProductResponseForGetAll {
     Long id;
     String name;
-    String price;
+    double price;
     String madeIn;
     Category category;
-    Brand brand;
+
+    public ProductResponseForGetAll(Long id, String name, double price, String madeIn, Category category) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.madeIn = madeIn;
+        this.category = category;
+    }
+
+
+
 }

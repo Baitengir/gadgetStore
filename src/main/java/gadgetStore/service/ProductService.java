@@ -9,9 +9,8 @@ import gadgetStore.enums.Category;
 import java.util.List;
 
 public interface ProductService {
-    SimpleResponse save (Long id, ProductRequest productRequest);
+    SimpleResponse save (Category category, Long id, ProductRequest productRequest);
     ProductResponseForGetById getById (Long id);
-    List<ProductResponseForGetAll> getAll ();
     SimpleResponse update (Long id, ProductRequest productRequest);
     SimpleResponse delete (Long id);
     List<ProductResponseForGetAll> getAllByCategoryAndPrice (Category category, Double price);

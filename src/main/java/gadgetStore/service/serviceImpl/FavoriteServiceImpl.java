@@ -3,6 +3,7 @@ package gadgetStore.service.serviceImpl;
 import gadgetStore.config.jwtConfig.JwtService;
 import gadgetStore.dto.SimpleResponse;
 import gadgetStore.dto.favoriteDto.FavoriteResponse;
+import gadgetStore.dto.productDto.ProductResponseForGetById;
 import gadgetStore.entities.Favorite;
 import gadgetStore.entities.Product;
 import gadgetStore.entities.User;
@@ -26,6 +27,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public SimpleResponse save(Long id) { // productId
         Product product = productRepo.getProductByIdOrException(id);
+        product.setFavorite(true);
 
         User user = jwtService.getAuthentication();
         Favorite favorite = Favorite.builder()
@@ -42,7 +44,26 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public FavoriteResponse getById(Long id) {
-        return null;
+        Favorite favorite = favoriteRepo.getFavoriteByIdOrException(id);
+        Product product = favorite.getProduct();
+
+        ProductResponseForGetById productResponse =
+                ProductResponseForGetById
+                        .builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .description(product.getDescription())
+                        .images(product.getImages())
+                        .madeIn(product.getMadeIn())
+                        .category(product.getCategory())
+                        .brand(product.getBrand())
+                        .build();
+
+        return FavoriteResponse.builder()
+                .id(favorite.getId())
+                .product(productResponse)
+                .build();
     }
 
     @Override

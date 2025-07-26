@@ -1,6 +1,5 @@
 package gadgetStore.service.serviceImpl;
 
-import gadgetStore.config.jwtConfig.JwtService;
 import gadgetStore.dto.SimpleResponse;
 import gadgetStore.dto.productDto.ProductRequest;
 import gadgetStore.dto.productDto.ProductResponseForGetAll;
@@ -15,7 +14,6 @@ import gadgetStore.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -23,10 +21,9 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepo productRepo;
     private final BrandRepo brandRepo;
-    private final JwtService jwtService;
 
     @Override
-    public SimpleResponse save(Long id, ProductRequest productRequest) {
+    public SimpleResponse save(Category category, Long id, ProductRequest productRequest) { //todo brandId
         Brand brand = brandRepo.getBrandByIdOrIdException(id);
 
         Product product = Product.builder()
@@ -35,7 +32,8 @@ public class ProductServiceImpl implements ProductService {
                 .description(productRequest.description())
                 .images(productRequest.images())
                 .madeIn(productRequest.madeIn())
-                .category(productRequest.category())
+                .category(category)
+                .brand(brand)
                 .build();
 
         brand.getProducts().add(product);
@@ -53,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
         return ProductResponseForGetById
                 .builder()
+                .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
                 .description(product.getDescription())
@@ -63,10 +62,10 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
-    @Override
-    public List<ProductResponseForGetAll> getAll() {
-        return productRepo.getAll();
-    }
+//    @Override
+//    public List<ProductResponseForGetAll> getAll() {
+//        return productRepo.getAll();
+//    }
 
     @Override
     public SimpleResponse update(Long id, ProductRequest productRequest) {
@@ -77,7 +76,6 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(productRequest.description());
         product.setImages(productRequest.images());
         product.setMadeIn(productRequest.madeIn());
-        product.setCategory(productRequest.category());
         productRepo.save(product);
 
         return SimpleResponse.builder()

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,5 +21,5 @@ public class Brand {
     String name;
     String image;
     @OneToMany(mappedBy = "brand", cascade = CascadeType.REMOVE)
-    List<Product> products;
+    List<Product> products = new ArrayList<>();
 }

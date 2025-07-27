@@ -6,8 +6,9 @@ import gadgetStore.dto.favoriteDto.FavoriteResponse;
 import java.util.List;
 
 public interface FavoriteService {
-    SimpleResponse save (Long id);
+    SimpleResponse addProduct(Long productId);
+    List<FavoriteResponse> getAllFavoritesByUserId (Long id);
     FavoriteResponse getById (Long id);
-    List<FavoriteResponse> getAll ();
     SimpleResponse delete (Long id);
+
 }

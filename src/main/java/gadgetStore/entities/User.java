@@ -34,9 +34,9 @@ public  class User implements UserDetails {
     Role role;
     @OneToOne (mappedBy = "user", cascade = CascadeType.REMOVE)
     Basket basket;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<Favorite> favorites = new ArrayList<>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<Comment> comments = new ArrayList<>();
 
     @Override

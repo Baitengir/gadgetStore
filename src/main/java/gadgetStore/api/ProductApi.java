@@ -7,6 +7,7 @@ import gadgetStore.dto.productDto.ProductResponseForGetById;
 import gadgetStore.enums.Category;
 import gadgetStore.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 public class ProductApi {
     private final ProductService productService;
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}")
     public SimpleResponse save(@PathVariable Long id, @RequestBody ProductRequest productRequest, @RequestParam Category category) {
         return productService.save(category, id, productRequest);

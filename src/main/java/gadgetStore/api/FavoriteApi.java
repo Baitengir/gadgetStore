@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 public class FavoriteApi {
     private final FavoriteService favoriteService;
 
-    @PostMapping("/{id}")
-    public SimpleResponse save (@PathVariable Long id) {
-        return favoriteService.save(id);
+    @PostMapping("/favourite/{productId}")
+    public SimpleResponse addProductToFavourite(@PathVariable Long productId) {
+        return favoriteService.addProduct(productId);
     }
 
     @GetMapping("/{id}")

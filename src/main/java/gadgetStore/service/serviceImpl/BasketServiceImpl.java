@@ -8,6 +8,8 @@ import gadgetStore.entities.Basket;
 import gadgetStore.entities.Product;
 import gadgetStore.entities.User;
 import gadgetStore.repository.BasketRepo;
+import gadgetStore.repository.ProductRepo;
+import gadgetStore.repository.UserRepo;
 import gadgetStore.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,11 +22,41 @@ import java.util.List;
 public class BasketServiceImpl implements BasketService {
     private final BasketRepo basketRepo;
     private final JwtService jwtService;
+    private final ProductRepo productRepo;
+    private final UserRepo userRepo;
+
+    @Override
+    public SimpleResponse addProduct(Long id) { // productId
+        User user = jwtService.getAuthentication();
+        Product product = productRepo.getProductByIdOrException(id);
+
+        boolean isRemoved = user.getBasket().getProducts().remove(product);
+
+        if (!isRemoved) {
+            user.getBasket().getProducts().add(product);
+            userRepo.save(user);
+
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Product with id '" + id + "' added to basket")
+                    .build();
+        } else {
+            userRepo.save(user);
+
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Product with id '" + id + "' removed in basket")
+                    .build();
+        }
+    }
 
     @Override
     public SimpleResponse cleanBasket() {
         User user = jwtService.getAuthentication();
+        Basket basket = user.getBasket();
         user.getBasket().getProducts().clear();
+        basketRepo.save(basket);
+
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .message("Basket successfully cleaned")

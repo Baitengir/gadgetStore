@@ -7,15 +7,16 @@ import gadgetStore.dto.productDto.ProductResponseForGetById;
 import gadgetStore.entities.Favorite;
 import gadgetStore.entities.Product;
 import gadgetStore.entities.User;
-import gadgetStore.exceptions.NotFoundException;
 import gadgetStore.repository.FavoriteRepo;
 import gadgetStore.repository.ProductRepo;
+import gadgetStore.repository.UserRepo;
 import gadgetStore.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,23 +24,50 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final JwtService jwtService;
     private final ProductRepo productRepo;
     private final FavoriteRepo favoriteRepo;
+    private final UserRepo userRepo;
 
     @Override
-    public SimpleResponse save(Long id) { // productId
-        Product product = productRepo.getProductByIdOrException(id);
-        product.setFavorite(true);
+    public SimpleResponse addProduct(Long id) { // productId
 
         User user = jwtService.getAuthentication();
+        Product product = productRepo.getProductByIdOrException(id);
+
+        Optional<Favorite> favInDb = favoriteRepo.getByUserIdAndProductId(user.getId(), product.getId());
+
+        if (favInDb.isPresent()) {
+            Favorite favorite = favInDb.get();
+
+            user.getFavorites().remove(favorite);
+            product.getFavorites().remove(favorite);
+            product.setFavorite(false);
+            favoriteRepo.delete(favorite);
+
+            return SimpleResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .message("Product with id '" + id + "' removed from favourites")
+                    .build();
+        }
+
         Favorite favorite = Favorite.builder()
                 .user(user)
                 .product(product)
                 .build();
+
+        user.getFavorites().add(favorite);
+        product.getFavorites().add(favorite);
+        product.setFavorite(true);
         favoriteRepo.save(favorite);
 
         return SimpleResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .message("Product with id " + id + " successfully added to favorite")
+                .message("Product with id '" + id + "' added to favourites")
                 .build();
+    }
+
+    @Override
+    public List<FavoriteResponse> getAllFavoritesByUserId(Long id) {
+        User user = userRepo.getUserByIdOrException(id);
+        return favoriteRepo.findAllByUserId(user.getId());
     }
 
     @Override
@@ -67,12 +95,12 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<FavoriteResponse> getAll() {
-        return List.of();
-    }
-
-    @Override
     public SimpleResponse delete(Long id) {
-        return null;
+        Favorite favorite = favoriteRepo.getFavoriteByIdOrException(id);
+        favoriteRepo.delete(favorite);
+        return SimpleResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .message("Favorite with id '" + id + "' successfully deleted")
+                .build();
     }
 }

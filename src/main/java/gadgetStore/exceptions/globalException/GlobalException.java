@@ -1,6 +1,7 @@
 package gadgetStore.exceptions.globalException;
 
 import gadgetStore.exceptions.AlreadyExistException;
+import gadgetStore.exceptions.ImpossibleException;
 import gadgetStore.exceptions.InvalidPasswordException;
 import gadgetStore.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,14 @@ public class GlobalException {
     public ExceptionResponse getExceptionResponse(InvalidPasswordException invalidPasswordException) {
         return new ExceptionResponse (
                 invalidPasswordException.getMessage(),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ImpossibleException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse getExceptionResponse(ImpossibleException impossibleException) {
+        return new ExceptionResponse (
+                impossibleException.getMessage(),
                 HttpStatus.BAD_REQUEST);
     }
 

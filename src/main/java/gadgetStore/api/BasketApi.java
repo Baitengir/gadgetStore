@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class BasketApi {
     private final BasketService basketService;
 
+    @PostMapping("/basket/{productId}")
+    public SimpleResponse addProductToBasket(@PathVariable Long productId) {
+        return basketService.addProduct(productId);
+    }
+
     @DeleteMapping("cleanBasket")
     public SimpleResponse cleanBasket() {
         return basketService.cleanBasket();

@@ -39,14 +39,6 @@ public class UserApi {
         return userService.delete(id);
     }
 
-    @PostMapping("/basket/{productId}")
-    public SimpleResponse addProductToBasket(@PathVariable Long productId) {
-        return userService.addProductToBasket(productId);
-    }
 
-    @PostMapping("/favourite/{productId}")
-    public SimpleResponse addProductToFavourite(@PathVariable Long productId) {
-        return userService.addProductToFavourite(productId);
-    }
 
 }

@@ -34,4 +34,6 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
         return findById(id).orElseThrow(
                 () -> new NotFoundException("Product with id " + id + " not found!"));
     }
+
+
 }

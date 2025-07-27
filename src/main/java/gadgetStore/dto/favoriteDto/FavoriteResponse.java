@@ -1,7 +1,6 @@
 package gadgetStore.dto.favoriteDto;
 
 import gadgetStore.dto.productDto.ProductResponseForGetById;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

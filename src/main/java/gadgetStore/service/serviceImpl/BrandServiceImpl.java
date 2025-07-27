@@ -3,7 +3,9 @@ package gadgetStore.service.serviceImpl;
 import gadgetStore.dto.SimpleResponse;
 import gadgetStore.dto.brandDto.BrandRequest;
 import gadgetStore.dto.brandDto.BrandResponse;
+import gadgetStore.entities.Basket;
 import gadgetStore.entities.Brand;
+import gadgetStore.entities.Product;
 import gadgetStore.repository.BrandRepo;
 import gadgetStore.service.BrandService;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +64,12 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public SimpleResponse delete(Long id) {
         Brand brand = brandRepo.getBrandByIdOrIdException(id);
+        for (Product product : brand.getProducts()) {
+            for (Basket basket : product.getBaskets()) {
+                basket.getProducts().remove(product);
+            }
+        }
+
         brandRepo.delete(brand);
 
         return SimpleResponse.builder()

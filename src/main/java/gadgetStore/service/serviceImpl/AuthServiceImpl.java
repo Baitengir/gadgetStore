@@ -30,16 +30,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse signUp(SignUpRequest signUpRequest) {
-        Optional<User> userByEmail = userRepo.findUserByEmail(signUpRequest.email());
+        Optional<User> userByEmail = userRepo.findUserByEmail(signUpRequest.getEmail());
         if (userByEmail.isPresent()) {
-            throw new AlreadyExistException("User with email '" + signUpRequest.email() + "' already exist");
+            throw new AlreadyExistException("User with email '" + signUpRequest.getEmail() + "' already exist");
         }
 
         User user = User.builder()
-                .firstName(signUpRequest.firstName())
-                .lastName(signUpRequest.lastName())
-                .email(signUpRequest.email())
-                .password(passwordEncoder.encode(signUpRequest.password()))
+                .firstName(signUpRequest.getFirstName())
+                .lastName(signUpRequest.getLastName())
+                .email(signUpRequest.getEmail())
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .signUpDate(ZonedDateTime.now())
                 .role(Role.USER)
                 .build();

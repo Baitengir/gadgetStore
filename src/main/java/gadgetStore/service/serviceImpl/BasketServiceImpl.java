@@ -86,6 +86,7 @@ public class BasketServiceImpl implements BasketService {
                 .id(user.getBasket().getId())
                 .products(resProds)
                 .totalPrice(totalPrice)
+                .count(products.size())
                 .build();
     }
 

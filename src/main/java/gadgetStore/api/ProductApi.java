@@ -30,16 +30,19 @@ public class ProductApi {
         return productService.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public SimpleResponse update(@PathVariable Long id,
                                  @RequestBody ProductRequest productRequest) {
         return productService.update(id, productRequest);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public SimpleResponse delete(@PathVariable Long id) {
         return productService.delete(id);
     }
+
 
     @GetMapping("/filter")
     public List<ProductResponseForGetAll> getAllByCategoryAndPrice(

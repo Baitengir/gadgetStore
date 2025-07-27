@@ -19,7 +19,7 @@ public interface CommentRepo extends JpaRepository<Comment, Long> {
             c.id, c.text, c.createdDate
                         )
                                     from Comment c
-                                                where Product = :product
+                                                where c.product = :product
             """)
     List<CommentResponse> getAllCommentsByProduct(Product product);
 
@@ -28,7 +28,7 @@ public interface CommentRepo extends JpaRepository<Comment, Long> {
             c.id, c.text, c.createdDate
                         )
                                     from Comment c
-                                                where User = :user
+                                                where c.user = :user
             """)
     List<CommentResponse> getAllCommentsByUser(User user);
 

@@ -5,6 +5,7 @@ import gadgetStore.dto.brandDto.BrandRequest;
 import gadgetStore.dto.brandDto.BrandResponse;
 import gadgetStore.service.BrandService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class BrandApi {
     private final BrandService brandService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public SimpleResponse save(@RequestBody BrandRequest brandRequest) {
         return brandService.save(brandRequest);
@@ -30,12 +32,14 @@ public class BrandApi {
         return brandService.getAllBrands();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public SimpleResponse update(@PathVariable Long id,
                                  @RequestBody BrandRequest brandRequest) {
         return brandService.update(id, brandRequest);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public SimpleResponse delete(@PathVariable Long id) {
         return brandService.delete(id);

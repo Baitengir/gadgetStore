@@ -21,7 +21,6 @@ public interface FavoriteRepo extends JpaRepository<Favorite, Long> {
 
     List<FavoriteResponse> findAllByUserId(Long userId);
 
-
     default Favorite getFavoriteByIdOrException(Long id){
         return findById(id).orElseThrow(
                 () -> new NotFoundException("Favorite with id '" + id + "' not found")

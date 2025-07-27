@@ -40,7 +40,7 @@ public class JwtService {
         DecodedJWT decodedJWT = verifier.verify(token);
         String email = decodedJWT.getClaim("email").asString();
         return userRepo.findUserByEmail(email).orElseThrow(
-                () -> new RuntimeException("User not found with email: " + email)
+                () -> new NotFoundException("User not found with email: " + email)
         );
     }
 

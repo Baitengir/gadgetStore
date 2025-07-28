@@ -1,5 +1,6 @@
 package gadgetStore.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import gadgetStore.enums.Category;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,6 +31,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     Category category;
     @ManyToOne
+    @JsonManagedReference // todo
     Brand brand;
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<Favorite> favorites = new ArrayList<>();

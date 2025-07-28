@@ -1,5 +1,6 @@
 package gadgetStore.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,5 +22,6 @@ public class Brand {
     String name;
     String image;
     @OneToMany(mappedBy = "brand", cascade = CascadeType.REMOVE)
+    @JsonBackReference
     List<Product> products = new ArrayList<>();
 }

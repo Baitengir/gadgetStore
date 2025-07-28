@@ -62,10 +62,6 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
-//    @Override
-//    public List<ProductResponseForGetAll> getAll() {
-//        return productRepo.getAll();
-//    }
 
     @Override
     public SimpleResponse update(Long id, ProductRequest productRequest) {

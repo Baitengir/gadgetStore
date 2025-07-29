@@ -15,7 +15,7 @@ import java.util.List;
 public interface CommentRepo extends JpaRepository<Comment, Long> {
 
     @Query("""
-            select new gadgetStore.dto.commentDto.CommentResponse(
+                        select new gadgetStore.dto.commentDto.CommentResponse(
             c.id, c.text, c.createdDate
                         )
                                     from Comment c

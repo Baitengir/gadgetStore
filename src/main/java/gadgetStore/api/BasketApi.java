@@ -3,6 +3,7 @@ package gadgetStore.api;
 import gadgetStore.dto.SimpleResponse;
 import gadgetStore.dto.basketDto.BasketResponse;
 import gadgetStore.service.BasketService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ public class BasketApi {
     private final BasketService basketService;
 
     @PostMapping("/basket/{productId}")
+    @Operation(summary = "Add product to basket", description = "Add product to basket")
     public SimpleResponse addProductToBasket(@PathVariable Long productId) {
         return basketService.addProduct(productId);
     }

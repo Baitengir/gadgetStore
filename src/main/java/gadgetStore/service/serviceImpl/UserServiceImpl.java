@@ -1,17 +1,11 @@
 package gadgetStore.service.serviceImpl;
 
-import gadgetStore.config.jwtConfig.JwtService;
 import gadgetStore.dto.SimpleResponse;
 import gadgetStore.dto.userDto.request.UserRequest;
 import gadgetStore.dto.userDto.response.UserResponse;
-import gadgetStore.entities.Favorite;
-import gadgetStore.entities.Product;
 import gadgetStore.entities.User;
 import gadgetStore.enums.Role;
 import gadgetStore.exceptions.ImpossibleException;
-import gadgetStore.repository.BasketRepo;
-import gadgetStore.repository.FavoriteRepo;
-import gadgetStore.repository.ProductRepo;
 import gadgetStore.repository.UserRepo;
 import gadgetStore.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

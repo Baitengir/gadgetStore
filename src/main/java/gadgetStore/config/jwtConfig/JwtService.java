@@ -21,8 +21,6 @@ public class JwtService {
     private String secretKey;
     private final UserRepo userRepo;
 
-
-    // create token
     public String generateToken(User user){
         ZonedDateTime now = ZonedDateTime.now();
         return JWT.create()

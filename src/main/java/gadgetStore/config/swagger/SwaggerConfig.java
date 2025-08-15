@@ -33,7 +33,6 @@ public class SwaggerConfig {
                 .security(Collections.singletonList(new SecurityRequirement().addList(API_KEY)));
     }
 
-
     public SecurityScheme apiKeySecurityScheme() {
         return new SecurityScheme()
                 .name("AUTH API")

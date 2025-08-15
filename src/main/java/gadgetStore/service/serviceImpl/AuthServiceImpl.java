@@ -15,7 +15,6 @@ import gadgetStore.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -43,7 +42,6 @@ public class AuthServiceImpl implements AuthService {
                 .signUpDate(ZonedDateTime.now())
                 .role(Role.USER)
                 .build();
-
 
         Basket basket = Basket.builder()
                 .user(user)
